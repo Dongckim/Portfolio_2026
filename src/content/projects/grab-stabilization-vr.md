@@ -1,6 +1,6 @@
 ---
 id: 1
-title: 'Grab Stabilization | Hand Tracking between Virtual Object'
+title: 'Grab Stabilization | Hand Interaction between Virtual Object'
 description: 'Implemented a stable hand-tracking interaction system for virtual objects using proximity detection and custom anchor logic to prevent jitter.'
 iconType: 'sphere'
 youtubeUrl:
@@ -18,7 +18,7 @@ To address the issue of unstable object tracking and accidental interactions in 
 
 ### **Performance Comparison**
 
-| **Before: Physics-based Grab** | **After: Stabilization Logic** |
+| **Before** | **After** |
 | :---: | :---: |
 | ![Before Optimization](/project/grab-before.gif) | ![After Optimization](/project/grab-after.gif) |
 | *Unstable tracking with frequent jitter at object edges* | *Stable holding position using custom anchor points* |

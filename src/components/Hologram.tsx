@@ -59,8 +59,8 @@ export default function Hologram({ mousePosition, scrollY }: HologramProps) {
       smoothMouseY += (currentMouseY - smoothMouseY) * 0.9
 
       // 3D Rotating Cube - positioned on the right side, moves to center when scrolling to PortfolioMeaning
-      // On mobile, always show cube in center
-      const showCube = true
+      // Hide cube entirely on mobile to reduce clutter
+      const showCube = !isMobile
       
       // Calculate scroll progress for cube animation
       // Start animation immediately when scrolling starts (scrollY = 0)

@@ -854,7 +854,7 @@ body {
   margin: 1.5rem 0;
   border: 1px solid rgba(0, 170, 255, 0.2);
   display: table;
-  table-layout: auto;
+  table-layout: fixed;
 }
 
 .project-long-description-markdown table thead {
@@ -880,7 +880,7 @@ body {
 }
 
 .project-long-description-markdown table td {
-  padding: 1rem;
+  padding: 0;
   text-align: center;
   border: 1px solid rgba(0, 170, 255, 0.2);
   color: #a0a0a0;
@@ -889,12 +889,19 @@ body {
 }
 
 .project-long-description-markdown table td img {
-  max-width: 100%;
+  width: 100%;
   height: auto;
-  border-radius: 4px;
+  border-radius: 0;
   border: 1px solid rgba(0, 170, 255, 0.2);
   display: block;
   margin: 0 auto;
+}
+
+.project-long-description-markdown table td > em,
+.project-long-description-markdown table td > p {
+  display: block;
+  padding: 0.9rem 1rem;
+  margin: 0;
 }
 
 .project-long-description-markdown table tr:nth-child(even) {
@@ -1346,6 +1353,25 @@ body {
   .project-long-description-markdown h3 {
     font-size: 1.1rem;
     margin-top: 1.2rem;
+  }
+
+  .project-long-description-markdown table {
+    margin: 1rem 0;
+  }
+
+  .project-long-description-markdown table th {
+    padding: 0.5rem;
+  }
+
+  .project-long-description-markdown table td {
+    padding: 0;
+  }
+
+  .project-long-description-markdown table td img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-radius: 0;
   }
 
   .project-media-container {
