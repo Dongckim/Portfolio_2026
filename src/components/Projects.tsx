@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react'
 import ProjectCard from './ProjectCard'
+import ReactMarkdown from 'react-markdown'
+import remarkGfm from 'remark-gfm'
 
 // YouTube iframe API types
 declare global {
@@ -25,80 +27,141 @@ interface Project {
   title: string
   description: string
   longDescription?: string
+  longDescriptionMarkdown?: string // Markdown content
   iconType: 'sphere' | 'dots' | 'plane'
   youtubeUrl?: string // YouTube video ID
-  gifs?: string[] // Array of GIF file paths
+  gifs?: string[] // Array of GIF file paths (first item is used as card thumbnail)
   technologies?: string[]
 }
 
-const projects: Project[] = [
-  {
-    id: 1,
-    title: 'Spatial AI Agents',
-    description:
-      'Real-time intelligent agents operating in 3D environments, understanding spatial context and user intent through multimodal interaction.',
-    longDescription: 'This project explores the development of AI agents that can understand and interact with 3D spatial environments in real-time. The agents use multimodal inputs including vision, audio, and spatial tracking to understand user intent and environmental context.',
-    iconType: 'sphere' as const,
-    youtubeUrl: 'dQw4w9WgXcQ', // YouTube video ID - replace with actual video ID
-    gifs: ['/project/grab.gif', '/project1-gif2.gif'], // Add your GIF file paths
-    technologies: ['React', 'Three.js', 'TensorFlow', 'WebRTC'],
-  },
-  {
-    id: 2,
-    title: 'Neural Interface Toolkit',
-    description:
-      'Framework for building AI-native spatial interfaces that adapt to user behavior and environmental context in XR spaces.',
-    longDescription: 'A comprehensive toolkit for creating adaptive spatial interfaces in extended reality environments. The framework uses neural networks to learn user preferences and adapt interface elements in real-time.',
-    iconType: 'dots' as const,
-    youtubeUrl: 'dQw4w9WgXcQ', // YouTube video ID - replace with actual video ID
-    gifs: ['/project/sync.gif'], // Add your GIF file paths
-    technologies: ['PyTorch', 'Unity', 'OpenXR', 'C#'],
-  },
-  {
-    id: 3,
-    title: 'Embodied Computing Research',
-    description:
-      'Exploring computational experiences beyond traditional screens, integrating physical and digital interaction paradigms.',
-    longDescription: 'Research into embodied computing experiences that transcend traditional screen-based interfaces. This project investigates how physical and digital interactions can be seamlessly integrated to create more natural computing experiences.',
-    iconType: 'plane' as const,
-    youtubeUrl: 'dQw4w9WgXcQ', // YouTube video ID - replace with actual video ID
-    gifs: ['/project/blend.gif', '/project3-gif2.gif', '/project3-gif3.gif'], // Add your GIF file paths
-    technologies: ['Arduino', 'Raspberry Pi', 'Python', 'Computer Vision'],
-  },
-  {
-    id: 4,
-    title: 'Project 4',
-    description:
-      'Description for project 4.',
-    longDescription: 'Long description for project 4.',
-    iconType: 'sphere' as const,
-    youtubeUrl: 'dQw4w9WgXcQ',
-    gifs: ['/project/aespa.gif'],
-    technologies: ['Technology 1', 'Technology 2'],
-  },
-  {
-    id: 5,
-    title: 'Project 5',
-    description:
-      'Description for project 5.',
-    longDescription: 'Long description for project 5.',
-    iconType: 'dots' as const,
-    youtubeUrl: 'dQw4w9WgXcQ',
-    gifs: ['/project/logo.gif'],
-    technologies: ['Technology 1', 'Technology 2'],
-  },
-  {
-    id: 6,
-    title: 'Project 6',
-    description:
-      'Description for project 6.',
-    longDescription: 'Long description for project 6.',
-    iconType: 'plane' as const,
-    youtubeUrl: 'dQw4w9WgXcQ',
-    gifs: ['/project/chatbot.gif'],
-    technologies: ['Technology 1', 'Technology 2'],
-  },
-]
+// Dynamically import all markdown files from the projects folder
+// Using import.meta.glob to automatically load all .md files
+const markdownModules = import.meta.glob('../content/projects/*.md', { 
+  eager: true,
+  as: 'raw'
+}) as Record<string, string>
+
+// Parse frontmatter manually (browser-compatible)
+const parseFrontmatter = (content: string): { frontmatter: Record<string, any>, body: string } => {
+  const frontmatterRegex = /^---\s*\n([\s\S]*?)\n---\s*\n([\s\S]*)$/
+  const match = content.match(frontmatterRegex)
+  
+  if (!match) {
+    return { frontmatter: {}, body: content }
+  }
+  
+  const frontmatterText = match[1]
+  const body = match[2]
+  
+  // Parse YAML-like frontmatter (simple key-value pairs)
+  const frontmatter: Record<string, any> = {}
+  const lines = frontmatterText.split('\n')
+  
+  let currentKey = ''
+  let currentValue: any = null
+  let inArray = false
+  let arrayValues: string[] = []
+  
+  for (const line of lines) {
+    const trimmed = line.trim()
+    if (!trimmed) continue
+    
+    // Check if it's an array item
+    if (trimmed.startsWith('- ')) {
+      if (!inArray) {
+        inArray = true
+        arrayValues = []
+      }
+      const value = trimmed.substring(2).trim().replace(/^['"]|['"]$/g, '')
+      arrayValues.push(value)
+      continue
+    }
+    
+    // If we were in an array, save it
+    if (inArray && currentKey) {
+      frontmatter[currentKey] = arrayValues
+      inArray = false
+      arrayValues = []
+    }
+    
+    // Check if it's a key-value pair
+    const colonIndex = trimmed.indexOf(':')
+    if (colonIndex > 0) {
+      currentKey = trimmed.substring(0, colonIndex).trim()
+      let value = trimmed.substring(colonIndex + 1).trim()
+      
+      // Remove quotes
+      if ((value.startsWith("'") && value.endsWith("'")) || 
+          (value.startsWith('"') && value.endsWith('"'))) {
+        value = value.slice(1, -1)
+      }
+      
+      // Parse value type
+      if (value === 'true') {
+        currentValue = true
+      } else if (value === 'false') {
+        currentValue = false
+      } else if (!isNaN(Number(value)) && value !== '') {
+        currentValue = Number(value)
+      } else {
+        currentValue = value
+      }
+      
+      frontmatter[currentKey] = currentValue
+    }
+  }
+  
+  // Handle last array if exists
+  if (inArray && currentKey) {
+    frontmatter[currentKey] = arrayValues
+  }
+  
+  return { frontmatter, body }
+}
+
+// Parse markdown files
+const parseMarkdownProject = (mdContent: string, fileName: string): Project | null => {
+  try {
+    if (!mdContent || typeof mdContent !== 'string') {
+      console.error(`Invalid markdown content for ${fileName}`)
+      return null
+    }
+    
+    const { frontmatter, body } = parseFrontmatter(mdContent)
+    
+    if (!frontmatter.id || !frontmatter.title || !frontmatter.description) {
+      console.error(`Missing required fields in ${fileName}:`, frontmatter)
+      return null
+    }
+    
+    const project: Project = {
+      id: frontmatter.id,
+      title: frontmatter.title,
+      description: frontmatter.description,
+      longDescriptionMarkdown: body.trim(),
+      iconType: frontmatter.iconType || 'sphere',
+      youtubeUrl: frontmatter.youtubeUrl,
+      gifs: frontmatter.gifs || [],
+      technologies: frontmatter.technologies || [],
+    }
+    return project
+  } catch (error) {
+    console.error(`Error parsing markdown file ${fileName}:`, error)
+    return null
+  }
+}
+
+// Load all markdown projects from the folder
+const markdownProjects: Project[] = Object.entries(markdownModules)
+  .map(([path, content]) => {
+    const fileName = path.split('/').pop() || path.split('\\').pop() || 'unknown.md'
+    return parseMarkdownProject(content as string, fileName)
+  })
+  .filter((p): p is Project => p !== null)
+  .sort((a, b) => a.id - b.id)
+
+// All projects are now loaded from markdown files
+const projects: Project[] = markdownProjects
 
 export default function Projects() {
   const [isVisible, setIsVisible] = useState(false)
@@ -188,7 +251,10 @@ export default function Projects() {
           {projects.map((project) => (
             <ProjectCard 
               key={project.id} 
-              {...project} 
+              id={project.id}
+              title={project.title}
+              description={project.description}
+              gifs={project.gifs}
               onClick={() => handleProjectClick(project)}
             />
           ))}
@@ -211,9 +277,16 @@ export default function Projects() {
               )}
             </div>
 
-            {selectedProject.longDescription && (
+            {/* Render markdown if available, otherwise use plain text */}
+            {selectedProject.longDescriptionMarkdown ? (
+              <div className="project-long-description-markdown">
+                <ReactMarkdown remarkPlugins={[remarkGfm]}>
+                  {selectedProject.longDescriptionMarkdown}
+                </ReactMarkdown>
+              </div>
+            ) : selectedProject.longDescription ? (
               <p className="project-long-description">{selectedProject.longDescription}</p>
-            )}
+            ) : null}
 
             <div className="project-media-container">
               {selectedProject.youtubeUrl && (
@@ -230,22 +303,6 @@ export default function Projects() {
                   />
                 </div>
               )}
-
-              {selectedProject.gifs && selectedProject.gifs.length > 0 && (
-                <div className="project-gifs">
-                  <h3>Demonstrations</h3>
-                  <div className="gif-grid">
-                    {selectedProject.gifs.map((gif, index) => (
-                      <img 
-                        key={index}
-                        src={gif} 
-                        alt={`${selectedProject.title} demonstration ${index + 1}`}
-                        className="project-gif"
-                      />
-                    ))}
-                  </div>
-                </div>
-              )}
             </div>
           </div>
         </div>
@@ -253,4 +310,3 @@ export default function Projects() {
     </>
   )
 }
-

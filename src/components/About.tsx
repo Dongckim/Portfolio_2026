@@ -56,12 +56,12 @@ export default function About() {
         <div className="about-content">
           <div className="about-image-wrapper">
             <div className="about-main-image">
-              <img
+            <img
                 src={profileImages[selectedIndex]}
                 alt={`Dongchan Kim ${selectedIndex + 1}`}
-                className="about-profile-image"
-                onError={(e) => {
-                  const target = e.target as HTMLImageElement
+              className="about-profile-image"
+              onError={(e) => {
+                const target = e.target as HTMLImageElement
                   target.src = `https://via.placeholder.com/600x600/0b0b0c/00aaff?text=Profile+${selectedIndex + 1}`
                 }}
               />
@@ -79,8 +79,8 @@ export default function About() {
                     onError={(e) => {
                       const target = e.target as HTMLImageElement
                       target.src = `https://via.placeholder.com/150x150/0b0b0c/00aaff?text=Thumb+${index + 1}`
-                    }}
-                  />
+              }}
+            />
                 </div>
               ))}
             </div>

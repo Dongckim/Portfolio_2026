@@ -35,9 +35,9 @@ export default function ProjectCard({
       )}
       <div className="project-card-title-overlay">
         <div className="project-card-overlay-content">
-          <h3>{title}</h3>
-          <p>{description}</p>
-        </div>
+        <h3>{title}</h3>
+        <p>{description}</p>
+          </div>
       </div>
     </div>
   )
