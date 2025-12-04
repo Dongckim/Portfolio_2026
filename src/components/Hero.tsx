@@ -61,8 +61,13 @@ export default function Hero({ scrollY }: HeroProps) {
           <a href="https://github.com/Dongckim" target="_blank" rel="noopener noreferrer">
             github
           </a>
-          <a href="mailto:dck.alx@gmail.com">email</a>
-          <a href="https://drive.google.com/file/d/1wECGZOtTBbxqMDg7t63bbWXzXEmMTKLq/view">CV</a>
+          <a href="https://dongckim.github.io/" target="_blank" rel="noopener noreferrer">
+            blog
+          </a>
+          <a href="https://www.linkedin.com/in/dongckim99/" target="_blank" rel="noopener noreferrer">
+            linkedin
+          </a>
+          <a href="https://drive.google.com/file/d/1zU0mOuQvxPLiF_YwOE4YZobviriola0m/view?usp=sharing">CV</a>
         </nav>
       </div>
     </section>

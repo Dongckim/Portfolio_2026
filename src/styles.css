@@ -908,6 +908,141 @@ body {
   background: rgba(0, 170, 255, 0.05);
 }
 
+/* Flowchart Styles */
+.project-long-description-markdown .flowchart-container {
+  margin: 30px 0;
+  padding: 25px;
+  background: rgba(0, 170, 255, 0.05);
+  border: 1px solid rgba(0, 170, 255, 0.2);
+  border-radius: 8px;
+  font-family: 'Courier New', monospace;
+  position: relative;
+  overflow-x: auto;
+}
+
+.project-long-description-markdown .flowchart-phase {
+  margin-bottom: 30px;
+}
+
+.project-long-description-markdown .flowchart-header {
+  background: linear-gradient(135deg, rgba(0, 170, 255, 0.3), rgba(0, 170, 255, 0.1));
+  border-left: 3px solid #00aaff;
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 4px;
+  margin-bottom: 15px;
+  font-weight: bold;
+  font-size: 1.1em;
+}
+
+.project-long-description-markdown .flowchart-step {
+  background: rgba(255, 100, 150, 0.15);
+  border-left: 3px solid #ff6496;
+  color: #ffb3c6;
+  padding: 10px 14px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+  font-weight: bold;
+}
+
+.project-long-description-markdown .flowchart-code-block {
+  background: rgba(0, 170, 255, 0.1);
+  border: 1px solid rgba(0, 170, 255, 0.3);
+  color: #00aaff;
+  padding: 8px 12px;
+  border-radius: 4px;
+  margin: 6px 0;
+  font-size: 0.9em;
+}
+
+.project-long-description-markdown .flowchart-code-block code {
+  background: transparent;
+  padding: 0;
+  color: #00aaff;
+}
+
+.project-long-description-markdown .flowchart-material-box {
+  background: rgba(0, 170, 255, 0.15);
+  border: 1px solid rgba(0, 170, 255, 0.4);
+  color: #ffffff;
+  padding: 12px;
+  border-radius: 6px;
+}
+
+.project-long-description-markdown .flowchart-material-box strong {
+  color: #00aaff;
+  display: block;
+  margin-bottom: 10px;
+}
+
+.project-long-description-markdown .flowchart-material-item {
+  background: rgba(0, 0, 0, 0.3);
+  padding: 6px 8px;
+  border-radius: 3px;
+  margin: 4px 0;
+  font-size: 0.85em;
+  color: #a0a0a0;
+}
+
+.project-long-description-markdown .flowchart-material-item code {
+  background: transparent;
+  padding: 0;
+  color: #a0a0a0;
+}
+
+.project-long-description-markdown .flowchart-arrow {
+  text-align: center;
+  margin: 15px 0;
+  color: rgba(0, 170, 255, 0.5);
+  font-size: 1.5em;
+}
+
+.project-long-description-markdown .flowchart-divider {
+  border-top: 2px dashed rgba(0, 170, 255, 0.3);
+  margin: 25px 0;
+}
+
+.project-long-description-markdown .flowchart-grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 15px;
+}
+
+.project-long-description-markdown .flowchart-grid-3 {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  gap: 15px;
+  margin-bottom: 20px;
+}
+
+.project-long-description-markdown .flowchart-highlight-box {
+  background: rgba(0, 170, 255, 0.2);
+  border: 1px solid rgba(0, 170, 255, 0.5);
+  color: #ffffff;
+  padding: 12px 16px;
+  border-radius: 6px;
+  margin-bottom: 20px;
+}
+
+.project-long-description-markdown .flowchart-highlight-box code {
+  background: transparent;
+  padding: 0;
+  color: #00aaff;
+}
+
+.project-long-description-markdown .flowchart-indent {
+  margin-left: 20px;
+  margin-bottom: 15px;
+}
+
+@media (max-width: 768px) {
+  .project-long-description-markdown .flowchart-grid-2,
+  .project-long-description-markdown .flowchart-grid-3 {
+    grid-template-columns: 1fr;
+  }
+}
+
 .project-media-container {
   display: flex;
   flex-direction: column;

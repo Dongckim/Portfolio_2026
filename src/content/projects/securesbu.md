@@ -1,11 +1,11 @@
 ---
-id: 7
+id: 6
 title: 'SecureSBU - Teams-integrated Security Chatbot'
 description: 'Description for project 7.'
 iconType: 'plane'
-youtubeUrl: 'dQw4w9WgXcQ'
+youtubeUrl: 'g81AkDZfJF4'
 gifs:
-  - '/project/chatbot.gif'
+  - '/project/sbusecure.jpg'
 technologies:
   - 'Technology 1'
   - 'Technology 2'

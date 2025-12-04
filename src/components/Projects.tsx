@@ -3,6 +3,74 @@ import ProjectCard from './ProjectCard'
 import ReactMarkdown from 'react-markdown'
 import remarkGfm from 'remark-gfm'
 
+// Helper function to render markdown with HTML support
+const renderMarkdownWithHTML = (content: string) => {
+  // Split content by HTML blocks (handles nested divs)
+  const parts: (string | { type: 'html'; content: string })[] = []
+  let currentIndex = 0
+  let depth = 0
+  let htmlStart = -1
+  
+  for (let i = 0; i < content.length; i++) {
+    if (content.substring(i, i + 5) === '<div ') {
+      if (depth === 0) {
+        htmlStart = i
+      }
+      depth++
+    } else if (content.substring(i, i + 6) === '</div>') {
+      depth--
+      if (depth === 0 && htmlStart !== -1) {
+        // Add markdown before HTML
+        if (htmlStart > currentIndex) {
+          const markdownPart = content.substring(currentIndex, htmlStart)
+          if (markdownPart.trim()) {
+            parts.push(markdownPart)
+          }
+        }
+        // Add HTML block
+        const htmlContent = content.substring(htmlStart, i + 6)
+        parts.push({ type: 'html', content: htmlContent })
+        currentIndex = i + 6
+        htmlStart = -1
+      }
+    }
+  }
+  
+  // Add remaining markdown
+  if (currentIndex < content.length) {
+    const remaining = content.substring(currentIndex)
+    if (remaining.trim()) {
+      parts.push(remaining)
+    }
+  }
+  
+  // If no HTML found, render as normal markdown
+  if (parts.length === 0 || (parts.length === 1 && typeof parts[0] === 'string')) {
+    return (
+      <ReactMarkdown remarkPlugins={[remarkGfm]}>
+        {content}
+      </ReactMarkdown>
+    )
+  }
+  
+  return parts.map((part, index) => {
+    if (typeof part === 'string') {
+      return (
+        <ReactMarkdown key={index} remarkPlugins={[remarkGfm]}>
+          {part}
+        </ReactMarkdown>
+      )
+    } else {
+      return (
+        <div 
+          key={index} 
+          dangerouslySetInnerHTML={{ __html: part.content }}
+        />
+      )
+    }
+  })
+}
+
 // YouTube iframe API types
 declare global {
   interface Window {
@@ -30,7 +98,7 @@ interface Project {
   longDescriptionMarkdown?: string // Markdown content
   iconType: 'sphere' | 'dots' | 'plane'
   youtubeUrl?: string // YouTube video ID
-  gifs?: string[] // Array of GIF file paths (first item is used as card thumbnail)
+  gifs?: string[] // Array of image file paths (GIF, JPG, PNG, etc.) - first item is used as card thumbnail
   technologies?: string[]
 }
 
@@ -248,16 +316,16 @@ export default function Projects() {
       >
         <h2 className="projects-title">Projects</h2>
         <div className="projects-grid">
-          {projects.map((project) => (
-            <ProjectCard 
-              key={project.id} 
+        {projects.map((project) => (
+          <ProjectCard 
+            key={project.id} 
               id={project.id}
               title={project.title}
               description={project.description}
               gifs={project.gifs}
-              onClick={() => handleProjectClick(project)}
-            />
-          ))}
+            onClick={() => handleProjectClick(project)}
+          />
+        ))}
         </div>
       </section>
 
@@ -280,9 +348,7 @@ export default function Projects() {
             {/* Render markdown if available, otherwise use plain text */}
             {selectedProject.longDescriptionMarkdown ? (
               <div className="project-long-description-markdown">
-                <ReactMarkdown remarkPlugins={[remarkGfm]}>
-                  {selectedProject.longDescriptionMarkdown}
-                </ReactMarkdown>
+                {renderMarkdownWithHTML(selectedProject.longDescriptionMarkdown)}
               </div>
             ) : selectedProject.longDescription ? (
               <p className="project-long-description">{selectedProject.longDescription}</p>

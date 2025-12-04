@@ -104,20 +104,21 @@ export default function About() {
               And how can technology be a facilitator of human connections with each other and with the world around us?</em>
             </p>
 
-            <p className="about-description">
-              In my leisure time, I like to explore exhibitions, nature, and city landscapes.
+            <p className="about-intro">
+              I've been a dedicated fan of Manchester United for over 10 years and also root for the esports team HLE(Hanwha Life Esports).
+              F1 racing is also my favorite sport, I love Max Verstappen and Red Bull Racing
             </p>
 
             <div className="about-contact">
               <a href="mailto:hello@example.com" className="about-link">Contact</a>
               {' | '}
-              <a href="/cv.pdf" className="about-link">Resume/CV</a>
+              <a href="https://drive.google.com/file/d/1zU0mOuQvxPLiF_YwOE4YZobviriola0m/view?usp=sharing" className="about-link">Resume/CV</a>
               {' (available upon request)'}
             </div>
 
             <div className="about-social">
               <a
-                href="https://github.com"
+                href="https://github.com/dongckim"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon"
@@ -128,18 +129,18 @@ export default function About() {
                 </svg>
               </a>
               <a
-                href="https://scholar.google.com"
+                href="https://dongckim.github.io/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon"
-                aria-label="Google Scholar"
+                aria-label="Blog"
               >
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M5.242 13.769L0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/>
+                  <path d="M19 3H5c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h14c1.1 0 2-.9 2-2V5c0-1.1-.9-2-2-2zm-5 14H7v-2h7v2zm3-4H7v-2h10v2zm0-4H7V7h10v2z"/>
                 </svg>
               </a>
               <a
-                href="https://linkedin.com"
+                href="https://www.linkedin.com/in/dongckim99/"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="social-icon"

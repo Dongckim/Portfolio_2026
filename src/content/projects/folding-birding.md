@@ -3,9 +3,9 @@ id: 5
 title: 'Folding Birding - Persistent Spatial Anchor System'
 description: 'Description for project 5.'
 iconType: 'dots'
-youtubeUrl: 'dQw4w9WgXcQ'
+youtubeUrl: ''
 gifs:
-  - '/project/logo.gif'
+  - '/project/birdings.gif'
 technologies:
   - 'Technology 1'
   - 'Technology 2'
